@@ -1,4 +1,3 @@
-
 ## Prisma Cloud Docker Image Scan GitHub Action
 
 This GitHub Actions workflow performs a Prisma Cloud scan on a Docker image built from a GitHub pull request. The workflow consists of the following steps:
