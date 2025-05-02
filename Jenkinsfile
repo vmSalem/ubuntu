@@ -1,8 +1,8 @@
 pipeline {
    agent any
    environment {
-      REPOSITORY = 'registry-server:5000'
-      PCC_CONSOLE_URL = "10.160.154.170:8083"
+      REPOSITORY = 'harbor.msalem.xyz'
+      PCC_CONSOLE_URL = "172.16.50.4:8083"
       CONTAINER_NAME = "ubuntu"
    }
     stages {
@@ -18,7 +18,7 @@ pipeline {
                   sh ''' 
                   docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REPOSITORY
                   echo "Building the Docker image..."
-                  docker build -t $REPOSITORY/$CONTAINER_NAME:$BUILD_NUMBER .
+                  docker build -t $REPOSITORY/library/$CONTAINER_NAME:$BUILD_NUMBER .
                   docker image ls
                   '''
                 }
@@ -29,7 +29,7 @@ pipeline {
             steps {
                script{
                   try {
-                    prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "$REPOSITORY/$CONTAINER_NAME:$BUILD_NUMBER", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
+                    prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: "$REPOSITORY/library/$CONTAINER_NAME:$BUILD_NUMBER", key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
                   } finally {
                     prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
                   }
@@ -41,7 +41,7 @@ pipeline {
             steps {
                   sh ''' 
                   echo "Image push into registry"
-                  docker push $REPOSITORY/$CONTAINER_NAME:$BUILD_NUMBER
+                  docker push $REPOSITORY/library/$CONTAINER_NAME:$BUILD_NUMBER
                   '''
             }
          }
