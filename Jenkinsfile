@@ -1,29 +1,12 @@
 pipeline {
-   agent {
-       docker {
-           image 'docker:dind'
-           args '--privileged' // Important: runs the container in privileged mode
-       }
-   }
+   agent any
    environment {
       REPOSITORY = 'harbor.msalem.xyz'
       PCC_CONSOLE_URL = "172.16.50.4:8083"
       CONTAINER_NAME = "ubuntu"
    }
     stages {
-         stage('Setup Docker') {
-            steps {
-              // Start the Docker daemon
-              sh """
-              #!/bin/sh
-              service docker start
-              """
-              // Verify by checking Docker version
-              sh 'docker version'
-            }
-         }       
-         
-        stage('Clone repository') {
+         stage('Clone repository') {
             steps {
                 checkout scm
             }
