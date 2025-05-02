@@ -1,5 +1,10 @@
 pipeline {
-   agent any
+   agent {
+       docker {
+           image 'docker:dind'
+           args '--privileged' // Important: runs the container in privileged mode
+       }
+   }
    environment {
       REPOSITORY = 'harbor.msalem.xyz'
       PCC_CONSOLE_URL = "172.16.50.4:8083"
