@@ -16,10 +16,10 @@ pipeline {
             steps {
                withCredentials([usernamePassword(credentialsId: 'docker_registry_creds', passwordVariable: 'REGISTRY_PASS', usernameVariable: 'REGISTRY_USER')]) {                
                   sh ''' 
-                  sudo -S VMware1! docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REPOSITORY
+                  docker login -u $REGISTRY_USER -p $REGISTRY_PASS $REPOSITORY
                   echo "Building the Docker image..."
-                  sudo -S VMware1! docker build -t $REPOSITORY/library/$CONTAINER_NAME:$BUILD_NUMBER .
-                  sudo -S VMware1! docker image ls
+                  docker build -t $REPOSITORY/library/$CONTAINER_NAME:$BUILD_NUMBER .
+                  docker image ls
                   '''
                 }
             }
