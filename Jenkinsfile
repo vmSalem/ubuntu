@@ -51,9 +51,8 @@ pipeline {
                withCredentials([usernamePassword(credentialsId: 'ssh_creds', passwordVariable: 'SSH_PASS', usernameVariable: 'SSH_USER')]) {
                   sh '''
                    mkdir -p ~/.ssh/
-                   ssh-keyscan -t rsa,dsa 10.160.154.170 >> ~/.ssh/known_hosts
-                   sshpass -p $SSH_PASS ssh $SSH_USER@10.160.154.170 'bash -s' <<EOF         
-                   sudo chmod +x /home/sysadmin/apps/sandbox-scan.sh
+                   ssh-keyscan -t rsa,dsa 172.16.1.13 >> ~/.ssh/known_hosts
+                   sshpass -p $SSH_PASS ssh $SSH_USER@172.16.1.13 'bash -s' <<EOF         
                    sudo PCC_CONSOLE_URL=$PCC_CONSOLE_URL token=$token CONTAINER_NAME=$CONTAINER_NAME TAG=$BUILD_NUMBER /home/sysadmin/apps/sandbox-scan.sh
                    exit
                    EOF
