@@ -11,7 +11,19 @@ pipeline {
       CONTAINER_NAME = "ubuntu"
    }
     stages {
-         stage('Clone repository') {
+         stage('Setup Docker') {
+            steps {
+              // Start the Docker daemon
+              sh """
+              #!/bin/sh
+              service docker start
+              """
+              // Verify by checking Docker version
+              sh 'docker version'
+            }
+         }       
+         
+        stage('Clone repository') {
             steps {
                 checkout scm
             }
